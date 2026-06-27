@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EndoSense · Diagnostica Endocrina nel Punto di Cura</title>
+  <meta name="description" content="EndoSense misura TSH e calcio ionico simultaneamente in meno di 10 minuti, direttamente in ambulatorio. Il primo biosensore POC per patologie tiroidee e paratiroidee.">
+  <meta property="og:title" content="EndoSense · POC Endocrinology">
+  <meta property="og:description" content="TSH + Ca²⁺ in &lt; 10 min. No lab. No wait.">
+  <meta property="og:type" content="website">
+  <link rel="canonical" href="https://endosense.it">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+  <style>
+    /* ─── TOKENS ─────────────────────────────────────────────── */
+    :root {
+      --primary:       #533afd;
+      --primary-deep:  #4434d4;
+      --primary-press: #2e2b8c;
+      --primary-soft:  #b9b9f9;
+      --primary-bg:    rgba(185,185,249,.16);
+      --navy:          #1c1e54;
+      --ink:           #0d253d;
+      --ink-2:         #273951;
+      --ink-mute:      #64748d;
+      --canvas:        #ffffff;
+      --canvas-soft:   #f6f9fc;
+      --canvas-cream:  #f5e9d4;
+      --hairline:      #e3e8ee;
+      --f: 'Inter','SF Pro Display',system-ui,-apple-system,sans-serif;
+      --ease:    cubic-bezier(.32,.72,0,1);
+      --ease-out:cubic-bezier(.16,1,.3,1);
+      --r-sm: 6px; --r-md: 8px; --r-lg: 12px; --r-xl: 16px; --r-pill: 9999px;
+      --sh-1: 0 1px 3px rgba(0,55,112,.07);
+      --sh-2: 0 8px 24px rgba(0,55,112,.08),0 2px 6px rgba(0,55,112,.04);
+      --sh-3: 0 20px 60px rgba(0,55,112,.11),0 8px 24px rgba(0,55,112,.06);
+    }
+
+    /* ─── RESET ──────────────────────────────────────────────── */
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth;scroll-padding-top:100px;font-feature-settings:"ss01","tnum" 0}
+    body{
+      font-family:var(--f);font-size:16px;font-weight:300;
+      color:var(--ink);background:var(--canvas);line-height:1.5;
+      overflow-x:hidden;-webkit-font-smoothing:antialiased;
+    }
+    img{display:block;max-width:100%}
+    a{color:inherit;text-decoration:none}
+    button{font-family:var(--f);cursor:pointer;border:none;background:none;padding:0}
+    :focus-visible{outline:2px solid var(--primary);outline-offset:3px;border-radius:4px}
+
+    /* grain overlay */
+    body::before{
+      content:'';position:fixed;inset:0;z-index:999;pointer-events:none;opacity:.022;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* ─── LAYOUT ─────────────────────────────────────────────── */
+    .wrap{max-width:1200px;margin:0 auto;padding:0 64px}
+    @media(max-width:768px){.wrap{padding:0 24px}}
+    .sec{padding:128px 0}
+    @media(max-width:768px){.sec{padding:88px 0}}
+
+    /* ─── TYPE SCALE ─────────────────────────────────────────── */
+    .disp-xl{font-size:clamp(42px,6vw,68px);font-weight:300;line-height:1.05;letter-spacing:-1.5px}
+    .disp-lg{font-size:clamp(30px,4vw,48px);font-weight:300;line-height:1.08;letter-spacing:-1px}
+    .disp-md{font-size:clamp(22px,2.6vw,32px);font-weight:300;line-height:1.1;letter-spacing:-.64px}
+    .body-lg{font-size:18px;font-weight:300;line-height:1.68;color:var(--ink-2)}
+    .body-md{font-size:16px;font-weight:300;line-height:1.6;color:var(--ink-mute)}
+
+    /* ─── EYEBROW TAG ────────────────────────────────────────── */
+    .tag{
+      display:inline-flex;align-items:center;gap:6px;
+      font-size:10px;font-weight:500;letter-spacing:.1px;text-transform:uppercase;
+      color:var(--primary-deep);background:var(--primary-bg);
+      border:1px solid rgba(83,58,253,.14);
+      padding:4px 10px;border-radius:var(--r-pill);margin-bottom:20px;
+    }
+    .tag.muted{color:var(--ink-mute);background:rgba(100,116,141,.08);border-color:rgba(100,116,141,.15)}
+    .tag.light{color:rgba(255,255,255,.85);background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.22)}
+
+    /* ─── BUTTONS ────────────────────────────────────────────── */
+    .btn{
+      display:inline-flex;align-items:center;gap:10px;
+      padding:10px 10px 10px 20px;
+      background:var(--primary);color:#fff;
+      border-radius:var(--r-pill);font-size:16px;font-weight:400;line-height:1;
+      transition:background .3s var(--ease),transform .3s var(--ease),box-shadow .3s var(--ease);
+      white-space:nowrap;
+    }
+    .btn:hover{background:var(--primary-deep);transform:translateY(-1px);box-shadow:0 8px 24px rgba(83,58,253,.26)}
+    .btn:active{transform:scale(.98);background:var(--primary-press)}
+    .btn-ic{
+      width:30px;height:30px;border-radius:50%;
+      background:rgba(255,255,255,.15);
+      display:flex;align-items:center;justify-content:center;flex-shrink:0;
+      transition:transform .3s var(--ease);
+    }
+    .btn:hover .btn-ic{transform:translateX(2px) translateY(-1px) scale(1.06)}
+
+    .btn-ghost{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 20px;background:transparent;
+      color:var(--ink-2);border:1px solid var(--hairline);
+      border-radius:var(--r-pill);font-size:16px;font-weight:400;line-height:1;
+      transition:all .2s var(--ease);
+    }
+    .btn-ghost:hover{border-color:var(--primary);color:var(--primary)}
+
+    .btn-white{
+      display:inline-flex;align-items:center;justify-content:center;gap:10px;
+      padding:14px 28px;background:#fff;color:var(--ink);
+      border-radius:var(--r-pill);font-size:15px;font-weight:500;line-height:1;
+      transition:all .3s var(--ease);width:100%;
+    }
+    .btn-white:hover{box-shadow:var(--sh-2);transform:translateY(-1px)}
+
+    /* ─── SCROLL BAR ─────────────────────────────────────────── */
+    #sbar{position:fixed;top:0;left:0;width:0;height:2px;background:var(--primary);z-index:201;pointer-events:none}
+
+    /* ─── NAVBAR ─────────────────────────────────────────────── */
+    #nav{
+      position:fixed;top:20px;left:50%;transform:translateX(-50%);
+      width:calc(100% - 48px);max-width:1100px;z-index:100;
+      height:56px;display:flex;align-items:center;
+      background:rgba(255,255,255,.88);
+      backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+      border:1px solid var(--hairline);border-radius:var(--r-pill);
+      padding:0 8px 0 24px;
+      box-shadow:var(--sh-1);
+      transition:box-shadow .4s var(--ease),background .4s var(--ease);
+    }
+    #nav.scrolled{box-shadow:var(--sh-2);background:rgba(255,255,255,.97)}
+    .nav-inner{width:100%;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .logo{display:flex;align-items:center;flex-shrink:0;height:30px}
+    .logo-img{height:28px;width:auto;filter:brightness(0) saturate(100%)}
+    .nav-links{display:flex;align-items:center;gap:2px;list-style:none}
+    .nav-links a{
+      font-size:14.5px;font-weight:500;color:var(--ink-2);
+      padding:6px 12px;border-radius:var(--r-pill);
+      transition:background .2s,color .2s;
+    }
+    .nav-links a:hover{color:var(--primary);background:var(--primary-bg)}
+    .nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+    .lang-toggle{display:flex;background:rgba(13,37,61,.05);border-radius:var(--r-pill);padding:3px}
+    .lang-btn{
+      padding:4px 10px;font-size:12px;font-weight:500;
+      color:var(--ink-mute);border-radius:var(--r-pill);
+      transition:all .2s;cursor:pointer;border:none;background:none;font-family:var(--f);
+    }
+    .lang-btn.active{background:#fff;color:var(--ink);box-shadow:var(--sh-1)}
+    .nav-btn{padding:8px 8px 8px 16px;font-size:13px}
+    .nav-btn .btn-ic{width:26px;height:26px}
+    .hamburger{
+      display:none;flex-direction:column;gap:5px;
+      background:rgba(13,37,61,.06);border-radius:var(--r-pill);padding:10px;
+      transition:background .2s;
+    }
+    .hamburger:hover{background:rgba(13,37,61,.1)}
+    .hamburger span{display:block;width:18px;height:1.5px;background:var(--ink);transform-origin:center;transition:all .35s var(--ease)}
+    .hamburger.open span:nth-child(1){transform:rotate(45deg) translate(4.5px,4.5px)}
+    .hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0)}
+    .hamburger.open span:nth-child(3){transform:rotate(-45deg) translate(4.5px,-4.5px)}
+    @media(max-width:1024px){.nav-links{display:none}.nav-cta-wrap{display:none}.hamburger{display:flex}}
+
+    /* ─── MOBILE MENU ────────────────────────────────────────── */
+    .mob-menu{
+      position:fixed;inset:0;z-index:99;
+      background:rgba(255,255,255,.97);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      opacity:0;pointer-events:none;transition:opacity .4s var(--ease);
+    }
+    .mob-menu.open{opacity:1;pointer-events:all}
+    .mob-menu ul{list-style:none;display:flex;flex-direction:column;align-items:center;gap:4px}
+    .mob-menu a{display:block;font-size:28px;font-weight:300;letter-spacing:-.6px;color:var(--ink);padding:10px 48px;transition:color .2s}
+    .mob-menu a:hover{color:var(--primary)}
+    .mob-menu li{opacity:0;transform:translateY(14px);transition:opacity .4s,transform .4s var(--ease)}
+    .mob-menu.open li:nth-child(1){opacity:1;transform:none;transition-delay:.06s}
+    .mob-menu.open li:nth-child(2){opacity:1;transform:none;transition-delay:.10s}
+    .mob-menu.open li:nth-child(3){opacity:1;transform:none;transition-delay:.14s}
+    .mob-menu.open li:nth-child(4){opacity:1;transform:none;transition-delay:.18s}
+    .mob-menu.open li:nth-child(5){opacity:1;transform:none;transition-delay:.22s}
+    .mob-cta{margin-top:40px;opacity:0;transform:translateY(14px);transition:opacity .4s .26s,transform .4s var(--ease) .26s}
+    .mob-menu.open .mob-cta{opacity:1;transform:none}
+
+    /* ─── GRADIENT MESH ──────────────────────────────────────── */
+    .mesh{
+      background: #fff;
+    }
+
+    /* ─── HERO ───────────────────────────────────────────────── */
+    #hero{min-height:100dvh;display:flex;align-items:center;position:relative;padding-top:96px}
+    .hero-grid{
+      display:flex;flex-direction:column;
+      align-items:flex-start;padding:100px 0 110px;
+      max-width:700px;
+    }
+    .hero-h1{
+      font-size:clamp(42px,6.2vw,70px);font-weight:300;
+      line-height:1.04;letter-spacing:-1.6px;color:var(--ink);margin-bottom:24px;
+    }
+    .hero-lead{
+      font-size:19px;font-weight:300;line-height:1.68;
+      color:var(--ink-2);max-width:460px;margin-bottom:36px;
+    }
+    .hero-ctas{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:48px}
+    .hero-proof{
+      display:flex;gap:24px;align-items:center;flex-wrap:wrap;
+      padding-top:28px;border-top:1px solid var(--hairline);
+    }
+    .hproof{
+      display:flex;align-items:center;gap:8px;
+      font-size:12.5px;font-weight:400;color:var(--ink-mute);
+    }
+    .hproof strong{color:var(--ink-2);font-weight:500;font-variant-numeric:tabular-nums}
+    .hdot{width:3px;height:3px;border-radius:50%;background:var(--hairline);flex-shrink:0}
+
+    /* device visual */
+    .hero-visual{display:flex;align-items:center;justify-content:center;position:relative}
+    .dev-outer{
+      background:rgba(13,37,61,.04);border:1px solid rgba(13,37,61,.07);
+      border-radius:32px;padding:16px;
+    }
+    .dev-inner{
+      background:var(--canvas-soft);border-radius:20px;
+      padding:36px 32px;
+      box-shadow:inset 0 1px 1px rgba(255,255,255,.9),var(--sh-2);
+      display:flex;flex-direction:column;align-items:center;gap:24px;
+    }
+    .dev-img{width:100%;max-width:280px;height:auto}
+    /* floating readings */
+    .dev-readings{
+      width:100%;
+      background:#fff;border:1px solid var(--hairline);
+      border-radius:var(--r-lg);padding:16px 20px;
+      box-shadow:var(--sh-1);
+      display:grid;grid-template-columns:1fr 1px 1fr;gap:0 20px;
+    }
+    .dev-vsep{background:var(--hairline)}
+    .dr{display:flex;flex-direction:column;gap:4px}
+    .dr-label{font-size:10px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-mute)}
+    .dr-val{font-size:22px;font-weight:300;letter-spacing:-.5px;color:var(--ink);font-variant-numeric:tabular-nums;line-height:1}
+    .dr-unit{font-size:11px;color:var(--ink-mute);font-weight:300}
+    .dr-badge{
+      display:inline-flex;align-items:center;gap:4px;
+      font-size:10px;font-weight:500;
+      background:rgba(22,163,74,.08);color:#15803d;
+      border:1px solid rgba(22,163,74,.15);
+      padding:3px 8px;border-radius:var(--r-pill);margin-top:4px;width:fit-content;
+    }
+    .dev-time{
+      position:absolute;top:-14px;right:-14px;
+      background:#fff;border:1px solid var(--hairline);
+      border-radius:var(--r-pill);padding:6px 14px;
+      font-size:11px;font-weight:500;color:var(--ink-mute);
+      box-shadow:var(--sh-1);display:flex;align-items:center;gap:6px;
+    }
+    .dev-time svg{color:var(--primary)}
+
+    /* product visual */
+    .hero-visual{display:flex;align-items:center;justify-content:center}
+    .prod-outer{
+      background:rgba(13,37,61,.04);border:1px solid rgba(13,37,61,.07);
+      border-radius:32px;padding:16px;width:100%;
+    }
+    .prod-inner{
+      background:var(--canvas-soft);border-radius:20px;
+      padding:32px;
+      box-shadow:inset 0 1px 1px rgba(255,255,255,.9),var(--sh-2);
+      display:flex;align-items:center;justify-content:center;
+    }
+    .prod-img{
+      width:100%;height:auto;display:block;
+      filter:drop-shadow(0 16px 40px rgba(0,55,112,.18));
+    }
+
+    @media(max-width:900px){
+      .hero-grid{grid-template-columns:1fr;text-align:center;gap:40px;padding:56px 0 72px}
+      .hero-visual{order:-1}
+      .hero-lead{max-width:100%}
+      .hero-ctas{justify-content:center}
+      .hero-proof{justify-content:center}
+    }
+
+    /* ─── PROBLEM ────────────────────────────────────────────── */
+    #problem{background:var(--canvas-soft)}
+    .prob-header{text-align:center;max-width:640px;margin:0 auto 72px}
+    /* numero dominante */
+    .prob-hero{
+      display:grid;grid-template-columns:1fr 1.6fr;
+      gap:48px;align-items:center;
+      background:var(--canvas);border:1px solid var(--hairline);
+      border-radius:var(--r-xl);padding:48px 48px;
+      margin-bottom:16px;
+      box-shadow:var(--sh-1);
+    }
+    .prob-big-num{
+      font-size:clamp(72px,12vw,120px);font-weight:300;
+      letter-spacing:-3px;color:var(--ink);
+      line-height:1;font-variant-numeric:tabular-nums;display:block;
+    }
+    .prob-big-label{
+      font-size:15px;font-weight:300;color:var(--ink-mute);
+      line-height:1.6;margin-top:14px;max-width:280px;
+    }
+    .prob-big-source{
+      font-size:11px;font-weight:400;color:var(--ink-mute);
+      opacity:.6;margin-top:10px;letter-spacing:.02em;
+    }
+    .prob-big-context{
+      font-size:17px;font-weight:300;color:var(--ink-2);
+      line-height:1.65;
+    }
+    .prob-big-context strong{color:var(--ink);font-weight:500}
+    /* tre dati di supporto */
+    .prob-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+    .pstat{
+      background:var(--canvas);border:1px solid var(--hairline);
+      border-radius:var(--r-lg);padding:28px 24px;
+      box-shadow:var(--sh-1);
+      transition:transform .3s var(--ease),box-shadow .3s var(--ease);
+    }
+    .pstat:hover{transform:translateY(-2px);box-shadow:var(--sh-2)}
+    .pstat-num{
+      font-size:clamp(30px,4vw,44px);font-weight:300;
+      letter-spacing:-.8px;color:var(--primary);
+      font-variant-numeric:tabular-nums;
+      display:block;margin-bottom:10px;line-height:1;
+    }
+    .pstat-title{font-size:15px;font-weight:500;color:var(--ink);margin-bottom:6px;letter-spacing:-.1px}
+    .pstat-desc{font-size:13px;font-weight:300;color:var(--ink-mute);line-height:1.6}
+    @media(max-width:900px){.prob-hero{grid-template-columns:1fr}}
+    @media(max-width:560px){.prob-stats{grid-template-columns:1fr}}
+
+    /* ─── SOLUTION ───────────────────────────────────────────── */
+    #solution{background:var(--canvas)}
+    .sol-top{text-align:center;max-width:640px;margin:0 auto 72px}
+    .feat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+    .feat{
+      background:var(--canvas-soft);border:1px solid var(--hairline);
+      border-radius:var(--r-lg);padding:32px 28px;
+      transition:transform .35s var(--ease),box-shadow .35s var(--ease);
+    }
+    .feat:hover{transform:translateY(-3px);box-shadow:var(--sh-2)}
+    .feat-ic{
+      width:44px;height:44px;border-radius:12px;
+      background:var(--primary-bg);border:1px solid rgba(83,58,253,.14);
+      display:flex;align-items:center;justify-content:center;
+      margin-bottom:20px;color:var(--primary);
+    }
+    .feat h3{font-size:17px;font-weight:500;letter-spacing:-.2px;color:var(--ink);margin-bottom:8px}
+    .feat p{font-size:15px;font-weight:300;color:var(--ink-mute);line-height:1.62}
+    /* product in solution section */
+    .sol-product{text-align:center}
+    .sol-product-img{
+      max-width:520px;width:100%;height:auto;
+      margin:0 auto;display:block;
+      filter:drop-shadow(0 20px 48px rgba(0,55,112,.14));
+    }
+    .patent{
+      margin-top:56px;text-align:center;
+      font-size:12px;font-weight:400;color:var(--ink-mute);letter-spacing:.01em;
+      padding-top:28px;border-top:1px solid var(--hairline);
+    }
+    @media(max-width:1024px){.feat-grid{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:560px){.feat-grid{grid-template-columns:1fr}}
+
+    /* ─── PROOF ──────────────────────────────────────────────── */
+    #proof{background:var(--canvas-cream)}
+    .proof-top{text-align:center;max-width:640px;margin:0 auto 64px}
+    .proof-layout{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+    .proof-img-wrap{display:flex;align-items:center;justify-content:center}
+    .proof-product-img{width:100%;max-width:420px;height:auto;filter:drop-shadow(0 24px 48px rgba(0,55,112,.13))}
+    @media(max-width:768px){.proof-layout{grid-template-columns:1fr;gap:40px}.proof-img-wrap{order:-1}}
+    .comp-grid{display:flex;justify-content:center;width:100%}
+    .ccol{
+      background:var(--canvas);border:1px solid var(--hairline);
+      border-radius:var(--r-lg);overflow:hidden;
+    }
+    .ccol.star{
+      background:var(--navy);border-color:var(--navy);
+      box-shadow:0 8px 32px rgba(28,30,84,.22),0 2px 8px rgba(28,30,84,.12);
+      width:100%;max-width:400px;
+    }
+    .chead{
+      padding:20px 24px;border-bottom:1px solid var(--hairline);
+    }
+    .ccol.star .chead{border-color:rgba(255,255,255,.1)}
+    .chead-name{font-size:15px;font-weight:500;color:var(--ink);display:block}
+    .ccol.star .chead-name{color:#fff}
+    .chead-country{font-size:10px;font-weight:400;color:var(--ink-mute);display:block;margin-top:2px}
+    .ccol.star .chead-country{color:rgba(255,255,255,.42)}
+    .crow{
+      display:flex;align-items:center;justify-content:space-between;
+      padding:14px 24px;border-bottom:1px solid var(--hairline);
+      font-size:14px;font-weight:400;color:var(--ink-mute);
+    }
+    .ccol.star .crow{border-color:rgba(255,255,255,.07);color:rgba(255,255,255,.9);font-weight:500}
+    .crow:last-child{border-bottom:none}
+    .ck{color:#16a34a;font-size:14px;font-weight:600}
+    .cx{color:#dc2626;font-size:14px;font-weight:600}
+    .ccol.star .ck{color:#4ade80}
+
+    /* ─── TEAM ───────────────────────────────────────────────── */
+
+    /* ─── HERO ROLES (self-selection) ───────────────────────── */
+    .hero-roles{
+      font-size:13px;font-weight:400;color:var(--ink-mute);
+      letter-spacing:.01em;margin-bottom:20px;
+    }
+
+    /* ─── ROADMAP ────────────────────────────────────────────── */
+    #roadmap{background:var(--canvas-soft)}
+    .rm-top{text-align:center;max-width:600px;margin:0 auto 72px}
+    .rm-track{
+      display:grid;grid-template-columns:repeat(4,1fr);
+      gap:0;position:relative;
+    }
+    /* connecting line */
+    .rm-track::before{
+      content:'';position:absolute;
+      top:20px;left:calc(12.5% + 8px);right:calc(12.5% + 8px);
+      height:2px;background:var(--hairline);z-index:0;
+    }
+    .rm-step{
+      display:flex;flex-direction:column;align-items:center;
+      text-align:center;padding:0 16px;position:relative;z-index:1;
+    }
+    .rm-dot{
+      width:40px;height:40px;border-radius:50%;
+      border:2px solid var(--hairline);
+      background:var(--canvas);
+      display:flex;align-items:center;justify-content:center;
+      margin-bottom:20px;flex-shrink:0;
+      font-size:13px;font-weight:500;color:var(--ink-mute);
+      transition:all .3s;
+    }
+    .rm-step.active .rm-dot{
+      background:var(--primary);border-color:var(--primary);
+      color:#fff;font-weight:600;
+      box-shadow:0 0 0 6px rgba(83,58,253,.12);
+    }
+    .rm-step.done .rm-dot{
+      background:var(--navy);border-color:var(--navy);color:#fff;
+    }
+    .rm-time{
+      font-size:11px;font-weight:500;letter-spacing:.06em;
+      text-transform:uppercase;color:var(--ink-mute);
+      margin-bottom:8px;
+    }
+    .rm-step.active .rm-time{color:var(--primary);font-weight:600}
+    .rm-title{
+      font-size:15px;font-weight:500;color:var(--ink);
+      letter-spacing:-.1px;margin-bottom:8px;line-height:1.3;
+    }
+    .rm-step.active .rm-title{color:var(--primary)}
+    .rm-desc{font-size:13px;font-weight:300;color:var(--ink-mute);line-height:1.6}
+    .rm-badge{
+      display:inline-block;font-size:10px;font-weight:500;
+      letter-spacing:.06em;text-transform:uppercase;
+      background:rgba(83,58,253,.1);color:var(--primary);
+      border:1px solid rgba(83,58,253,.18);
+      padding:3px 8px;border-radius:var(--r-pill);
+      margin-bottom:10px;
+    }
+    @media(max-width:900px){
+      .rm-track{grid-template-columns:1fr 1fr;gap:40px 20px}
+      .rm-track::before{display:none}
+    }
+    @media(max-width:480px){
+      .rm-track{grid-template-columns:1fr}
+      .rm-step{align-items:flex-start;text-align:left;flex-direction:row;gap:16px}
+      .rm-dot{flex-shrink:0;margin-bottom:0;margin-top:2px}
+      .rm-content{display:flex;flex-direction:column}
+    }
+
+    /* ─── CTA / WAITLIST ─────────────────────────────────────── */
+    #cta{padding:128px 0;position:relative;overflow:hidden}
+    .cta-inner{position:relative;z-index:1;max-width:540px;margin:0 auto;text-align:center}
+    .cta-form{margin-top:40px;display:flex;flex-direction:column;gap:14px;text-align:left}
+    .fg{display:flex;flex-direction:column;gap:6px}
+    .flabel{font-size:10.5px;font-weight:500;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-mute)}
+    .finput,.fsel{
+      width:100%;padding:12px 14px;
+      background:rgba(255,255,255,.82);backdrop-filter:blur(8px);
+      border:1px solid var(--hairline);border-radius:var(--r-md);
+      font-family:var(--f);font-size:16px;font-weight:300;color:var(--ink);
+      outline:none;transition:border-color .2s,background .2s;-webkit-appearance:none;
+    }
+    .finput:focus,.fsel:focus{border-color:var(--primary);background:rgba(255,255,255,.98)}
+    .finput::placeholder{color:var(--ink-mute);opacity:.7}
+    .fsel{
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2364748d' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat:no-repeat;background-position:right 14px center;
+    }
+    .fsel option{background:var(--canvas);color:var(--ink)}
+    .frow{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+    @media(max-width:520px){.frow{grid-template-columns:1fr}}
+    .fdisc{font-size:12px;color:var(--ink-mute);text-align:center;margin-top:-4px}
+    /* trust signal above form */
+    .cta-trust{
+      display:inline-flex;align-items:center;gap:8px;
+      font-size:13px;font-weight:400;color:var(--ink-mute);
+      background:rgba(255,255,255,.75);backdrop-filter:blur(8px);
+      border:1px solid var(--hairline);
+      border-radius:var(--r-pill);padding:8px 14px;
+      margin-bottom:28px;
+    }
+    .cta-trust svg{color:var(--primary);flex-shrink:0}
+    /* what happens next steps */
+    .next-steps{
+      display:flex;align-items:center;justify-content:center;
+      gap:10px;margin-top:28px;flex-wrap:wrap;
+    }
+    .ns-item{display:flex;align-items:center;gap:8px}
+    .ns-num{
+      width:22px;height:22px;border-radius:50%;
+      background:var(--primary);color:#fff;
+      font-size:11px;font-weight:600;
+      display:flex;align-items:center;justify-content:center;flex-shrink:0;
+    }
+    .ns-text{font-size:12px;font-weight:400;color:var(--ink-mute)}
+    .ns-arrow{font-size:12px;color:var(--ink-mute);opacity:.5}
+    @media(max-width:560px){.ns-arrow{display:none}.next-steps{flex-direction:column;align-items:flex-start;gap:8px}}
+    .fdiv{display:flex;align-items:center;gap:16px;color:var(--ink-mute);font-size:13px;margin:4px 0}
+    .fdiv::before,.fdiv::after{content:'';flex:1;height:1px;background:var(--hairline)}
+    .pilot-btn{
+      display:inline-flex;align-items:center;gap:7px;
+      font-size:15px;font-weight:400;color:var(--ink-2);
+      padding:10px 20px;border:1px solid var(--hairline);
+      border-radius:var(--r-pill);background:rgba(255,255,255,.82);
+      backdrop-filter:blur(8px);transition:all .2s;
+    }
+    .pilot-btn:hover{border-color:var(--primary);color:var(--primary);background:rgba(255,255,255,.98)}
+    .fsuccess{
+      display:none;background:rgba(255,255,255,.9);backdrop-filter:blur(8px);
+      border:1px solid var(--hairline);border-radius:var(--r-lg);
+      padding:40px 32px;text-align:center;margin-top:24px;
+    }
+    .fsuccess.show{display:block}
+    .fsuccess-ic{
+      width:48px;height:48px;border-radius:50%;
+      background:rgba(22,163,74,.1);display:flex;align-items:center;justify-content:center;
+      margin:0 auto 16px;color:#16a34a;
+    }
+
+    /* ─── FOOTER ─────────────────────────────────────────────── */
+    #footer{background:var(--navy)}
+    .foot-grid{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:64px;padding:80px 0 64px}
+    .foot-logo{height:40px;width:auto;margin-bottom:16px;display:block}
+    .foot-tag{font-size:15px;font-weight:300;color:rgba(255,255,255,.38);max-width:200px;line-height:1.6}
+    .fcol-h{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.45);margin-bottom:20px}
+    .fcol-links{list-style:none;display:flex;flex-direction:column;gap:10px}
+    .fcol-links a{font-size:15px;font-weight:300;color:rgba(255,255,255,.42);transition:color .2s}
+    .fcol-links a:hover{color:#fff}
+    .foot-contacts{display:flex;flex-direction:column;gap:10px}
+    .foot-contacts a{font-size:15px;font-weight:300;color:rgba(255,255,255,.42);transition:color .2s}
+    .foot-contacts a:hover{color:#fff}
+    .foot-bottom{
+      border-top:1px solid rgba(255,255,255,.09);padding:22px 0;
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+    }
+    .foot-bottom span{font-size:11px;font-weight:400;color:rgba(255,255,255,.3);letter-spacing:.02em}
+    @media(max-width:768px){.foot-grid{grid-template-columns:1fr;gap:48px}}
+    @media(max-width:560px){.foot-bottom{flex-direction:column;text-align:center}}
+
+    /* ─── TOAST ──────────────────────────────────────────────── */
+    .toast{
+      position:fixed;bottom:24px;right:24px;z-index:500;
+      background:var(--ink);color:#fff;
+      padding:14px 20px;border-radius:12px;
+      font-size:14px;font-weight:300;line-height:1.5;
+      box-shadow:var(--sh-3);border-left:3px solid var(--primary);
+      transform:translateY(100px);opacity:0;transition:all .4s var(--ease);max-width:340px;
+    }
+    .toast.show{transform:translateY(0);opacity:1}
+
+    /* ─── ANIMATIONS ─────────────────────────────────────────── */
+    .anim{
+      opacity:0;transform:translateY(22px);filter:blur(4px);
+      transition:opacity .7s var(--ease-out),transform .7s var(--ease-out),filter .65s var(--ease-out);
+    }
+    .anim.in{opacity:1;transform:none;filter:none}
+  </style>
+</head>
+<body>
+
+<div id="sbar" aria-hidden="true"></div>
+
+<!-- ── NAVBAR ──────────────────────────────────────────────── -->
+<nav id="nav" aria-label="Navigazione principale">
+  <div class="nav-inner">
+    <a href="#" class="logo" aria-label="EndoSense, torna in cima">
+      <img src="assets/logo.png" class="logo-img" alt="EndoSense">
+    </a>
+    <ul class="nav-links" role="list">
+      <li><a href="#problem" data-i18n="nav.problem">Il Problema</a></li>
+      <li><a href="#solution" data-i18n="nav.solution">La Soluzione</a></li>
+      <li><a href="#proof" data-i18n="nav.edge">Vantaggio</a></li>
+      <li><a href="#roadmap" data-i18n="nav.roadmap">Roadmap</a></li>
+    </ul>
+    <div class="nav-right">
+      <div class="lang-toggle" aria-label="Lingua">
+        <button class="lang-btn active" data-lang="it" onclick="setLang('it')">IT</button>
+        <button class="lang-btn" data-lang="en" onclick="setLang('en')">EN</button>
+      </div>
+      <div class="nav-cta-wrap">
+        <a href="#cta" class="btn nav-btn">
+          <span data-i18n="nav.cta">Richiedi Accesso</span>
+          <span class="btn-ic" aria-hidden="true">
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h10M7 2l4 4-4 4"/></svg>
+          </span>
+        </a>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Apri menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- ── MOBILE MENU ──────────────────────────────────────────── -->
+<div class="mob-menu" id="mob-menu" aria-hidden="true">
+  <ul>
+    <li><a href="#problem" data-i18n="nav.problem" onclick="closeMob()">Il Problema</a></li>
+    <li><a href="#solution" data-i18n="nav.solution" onclick="closeMob()">La Soluzione</a></li>
+    <li><a href="#proof" data-i18n="nav.edge" onclick="closeMob()">Vantaggio</a></li>
+    <li><a href="#roadmap" data-i18n="nav.roadmap" onclick="closeMob()">Roadmap</a></li>
+    <li><a href="#cta" data-i18n="nav.contact" onclick="closeMob()">Contatti</a></li>
+  </ul>
+  <div class="mob-cta">
+    <a href="#cta" class="btn" onclick="closeMob()">
+      <span data-i18n="nav.cta">Richiedi Accesso</span>
+      <span class="btn-ic" aria-hidden="true">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h10M7 2l4 4-4 4"/></svg>
+      </span>
+    </a>
+  </div>
+</div>
+
+<main id="main">
+
+<!-- ── HERO ────────────────────────────────────────────────── -->
+<section id="hero" class="mesh" aria-label="Hero">
+  <div class="wrap">
+    <div class="hero-grid">
+
+      <!-- copy -->
+      <div>
+        <div class="tag anim" data-i18n="hero.tag">DIAGNOSTICA POINT-OF-CARE</div>
+        <h1 class="hero-h1 anim" style="transition-delay:.06s">
+          <span data-i18n="hero.h1a">TSH e Ca²⁺.</span><br>
+          <span data-i18n="hero.h1b">In ambulatorio.</span><br>
+          <span data-i18n="hero.h1c">In 10 minuti.</span>
+        </h1>
+        <!-- Self-selection: AIDA Interest -->
+        <p class="hero-roles anim" style="transition-delay:.1s" aria-label="Destinato a">
+          <span data-i18n="hero.roles">Per endocrinologi · chirurghi · medici di base · farmacie</span>
+        </p>
+        <p class="hero-lead anim" style="transition-delay:.14s" data-i18n="hero.lead">
+          Il primo biosensore che misura entrambi gli indicatori chiave in un'unica analisi, direttamente nel punto di cura. Senza laboratorio, senza attesa.
+        </p>
+        <div class="hero-ctas anim" style="transition-delay:.20s">
+          <a href="#cta" class="btn">
+            <span data-i18n="hero.cta1">Registra il tuo interesse</span>
+            <span class="btn-ic" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 6h10M7 2l4 4-4 4"/></svg>
+            </span>
+          </a>
+          <a href="#solution" class="btn-ghost" data-i18n="hero.cta2">Come funziona →</a>
+        </div>
+        <div class="hero-proof anim" style="transition-delay:.26s" aria-label="Caratteristiche principali">
+          <div class="hproof">
+            <strong class="mono">&lt; 10 min</strong>
+            <span data-i18n="hero.p1">per referto</span>
+          </div>
+          <div class="hdot" aria-hidden="true"></div>
+          <div class="hproof">
+            <strong>TSH + Ca²⁺</strong>
+            <span data-i18n="hero.p2">simultanei</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── PROBLEM ──────────────────────────────────────────────── -->
+<section id="problem" class="sec" aria-labelledby="prob-h2">
+  <div class="wrap">
+
+    <!-- Header centrato -->
+    <div class="prob-header">
+      <div class="tag muted anim" data-i18n="prob.tag">IL PROBLEMA</div>
+      <h2 id="prob-h2" class="disp-lg anim" style="transition-delay:.06s;margin-top:4px" data-i18n="prob.h2">
+        La domanda esplode.<br>Il laboratorio non regge.
+      </h2>
+    </div>
+
+    <!-- Numero dominante -->
+    <div class="prob-hero anim" style="transition-delay:.1s">
+      <div>
+        <span class="prob-big-num" data-i18n="prob.big.num">6M+</span>
+        <p class="prob-big-label" data-i18n="prob.big.label">pazienti con patologie tiroidee in Italia. Una domanda strutturale che la clinica non riesce ad assorbire.</p>
+        <p class="prob-big-source" data-i18n="prob.big.source">Fonte: ISS, Istituto Superiore di Sanità</p>
+      </div>
+      <p class="prob-big-context" data-i18n="prob.big.context">
+        Il bacino cresce ogni anno: ipotiroidismo, Hashimoto, Graves, noduli, post-tiroidectomia. Tutti pazienti da monitorare nel tempo. <strong>Ogni giorno che aspettano è capacità che la clinica non monetizza.</strong>
+      </p>
+    </div>
+
+    <!-- Tre dati di sistema -->
+    <div class="prob-stats">
+      <div class="pstat anim" style="transition-delay:.14s">
+        <span class="pstat-num" data-i18n="prob.s1.num">146 gg</span>
+        <div class="pstat-title" data-i18n="prob.s1.title">Attesa media per visita endocrinologica</div>
+        <p class="pstat-desc" data-i18n="prob.s1.desc">Il 2° tempo di attesa più alto in Italia. La clinica perde pazienti che non riesce a prendere in carico.</p>
+      </div>
+      <div class="pstat anim" style="transition-delay:.20s">
+        <span class="pstat-num" data-i18n="prob.s2.num">2h / die</span>
+        <div class="pstat-title" data-i18n="prob.s2.title">Tempo bruciato in gestione asincrona</div>
+        <p class="pstat-desc" data-i18n="prob.s2.desc">Ogni giorno, l'endocrinologo dedica 2 ore a referti e follow-up remoti invece di acquisire nuovi pazienti.</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── SOLUTION ─────────────────────────────────────────────── -->
+<section id="solution" class="sec" aria-labelledby="sol-h2">
+  <div class="wrap">
+    <div class="sol-top">
+      <div class="tag anim" data-i18n="sol.tag">LA SOLUZIONE</div>
+      <h2 id="sol-h2" class="disp-lg anim" style="transition-delay:.06s;margin-top:4px" data-i18n="sol.h2">
+        Un biosensore.<br>Due marcatori. Una visita.
+      </h2>
+      <p class="body-lg anim" style="transition-delay:.12s;margin-top:18px" data-i18n="sol.lead">
+        EndoSense è un biosensore elettrochimico che misura TSH e calcio ionico simultaneamente, direttamente in ambulatorio.
+      </p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat anim">
+        <div class="feat-ic" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="10" cy="10" r="8"/><path d="M10 6v4.5l3 1.5"/>
+          </svg>
+        </div>
+        <h3 data-i18n="sol.f1.h">Risultati in &lt; 10 minuti</h3>
+        <p data-i18n="sol.f1.p">Diagnosi immediata durante la visita. Il paziente non deve tornare per il referto.</p>
+      </div>
+      <div class="feat anim" style="transition-delay:.07s">
+        <div class="feat-ic" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="10" cy="10" r="3.5"/><circle cx="10" cy="10" r="8"/>
+            <path d="M10 2v3M10 15v3M2 10h3M15 10h3"/>
+          </svg>
+        </div>
+        <h3 data-i18n="sol.f2.h">Doppia misurazione</h3>
+        <p data-i18n="sol.f2.p">TSH e Ca²⁺ ionizzato in un'unica analisi. L'unico sistema POC che misura entrambi.</p>
+      </div>
+      <div class="feat anim" style="transition-delay:.14s">
+        <div class="feat-ic" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 16a7 7 0 100-12"/><path d="M4 10h9M4 14h9"/>
+          </svg>
+        </div>
+        <h3 data-i18n="sol.f3.h">Design sostenibile</h3>
+        <p data-i18n="sol.f3.p">Hardware principale riutilizzabile, sensore monouso. Minimo impatto ambientale, massima praticità clinica.</p>
+      </div>
+      <div class="feat anim" style="transition-delay:.21s">
+        <div class="feat-ic" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="16" height="12" rx="2"/>
+            <path d="M6 7h8M6 10h5"/>
+            <path d="M8 15v2M12 15v2M6 17h8"/>
+          </svg>
+        </div>
+        <h3 data-i18n="sol.f4.h">Dashboard software</h3>
+        <p data-i18n="sol.f4.p">Tutte le rilevazioni raccolte in un'unica piattaforma. Storico del paziente, trend e report accessibili dal medico in qualsiasi momento.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PROOF ─────────────────────────────────────────────────── -->
+<section id="proof" class="sec" aria-labelledby="proof-h2">
+  <div class="wrap">
+    <div class="proof-top">
+      <div class="tag muted anim" data-i18n="proof.tag">VANTAGGIO COMPETITIVO</div>
+      <h2 id="proof-h2" class="disp-lg anim" style="transition-delay:.06s;margin-top:4px" data-i18n="proof.h2">
+        L'unico sul mercato<br>che misura entrambi.
+      </h2>
+      <p class="body-lg anim" style="transition-delay:.12s;margin-top:18px" data-i18n="proof.lead">
+        TSH + Ca²⁺ combinati, point-of-care, costo accessibile. Una combinazione che nessun competitor offre.
+      </p>
+    </div>
+    <div class="proof-layout anim" style="transition-delay:.2s">
+      <div class="proof-img-wrap">
+        <img src="assets/product_nobg.png" alt="EndoSense device" class="proof-product-img">
+      </div>
+      <div class="comp-grid" role="table" aria-label="Caratteristiche EndoSense">
+        <div class="ccol star" role="columnheader">
+          <div class="chead">
+            <span class="chead-name">EndoSense</span>
+            <span class="chead-country">Italia</span>
+          </div>
+          <div class="crow" role="row"><span data-i18n="proof.col.speed">&lt; 10 min</span> <span class="ck" aria-label="Sì">✓</span></div>
+          <div class="crow" role="row"><span data-i18n="proof.col.dual">TSH + Ca²⁺</span> <span class="ck" aria-label="Sì">✓</span></div>
+          <div class="crow" role="row"><span data-i18n="proof.col.portable">Portatile</span> <span class="ck" aria-label="Sì">✓</span></div>
+          <div class="crow" role="row"><span data-i18n="proof.col.comb">Facile da usare</span> <span class="ck" aria-label="Sì">✓</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── ROADMAP ──────────────────────────────────────────────── -->
+<section id="roadmap" class="sec" aria-labelledby="rm-h2">
+  <div class="wrap">
+    <div class="rm-top">
+      <div class="tag muted anim" data-i18n="rm.tag">ROADMAP</div>
+      <h2 id="rm-h2" class="disp-lg anim" style="transition-delay:.06s;margin-top:4px" data-i18n="rm.h2">
+        Quattro fasi.<br>Un'unica destinazione.
+      </h2>
+      <p class="body-lg anim" style="transition-delay:.12s;margin-top:18px" data-i18n="rm.lead">
+        Il percorso che ci porterà dalla validazione tecnologica al lancio commerciale in Europa.
+      </p>
+    </div>
+    <div class="rm-track">
+
+      <div class="rm-step active anim" style="transition-delay:.1s">
+        <div class="rm-dot">1</div>
+        <div class="rm-content">
+          <div class="rm-badge" data-i18n="rm.s1.badge">In corso</div>
+          <div class="rm-time" data-i18n="rm.s1.time">0 – 6 mesi</div>
+          <div class="rm-title" data-i18n="rm.s1.title">Validazione Tecnologica</div>
+          <div class="rm-desc" data-i18n="rm.s1.desc">Proof-of-concept e raccolta dei primi dati di performance del biosensore.</div>
+        </div>
+      </div>
+
+      <div class="rm-step anim" style="transition-delay:.16s">
+        <div class="rm-dot">2</div>
+        <div class="rm-content">
+          <div class="rm-time" data-i18n="rm.s2.time">6 – 18 mesi</div>
+          <div class="rm-title" data-i18n="rm.s2.title">Sviluppo della Piattaforma</div>
+          <div class="rm-desc" data-i18n="rm.s2.desc">Sviluppo della piattaforma POC integrata, cartuccia e sistema embedded.</div>
+        </div>
+      </div>
+
+      <div class="rm-step anim" style="transition-delay:.22s">
+        <div class="rm-dot">3</div>
+        <div class="rm-content">
+          <div class="rm-time" data-i18n="rm.s3.time">18 – 36 mesi</div>
+          <div class="rm-title" data-i18n="rm.s3.title">Validazione Clinica e Regolatoria</div>
+          <div class="rm-desc" data-i18n="rm.s3.desc">Studi analitici, validazione clinica e iter IVDR Classe C.</div>
+        </div>
+      </div>
+
+      <div class="rm-step anim" style="transition-delay:.28s">
+        <div class="rm-dot">4</div>
+        <div class="rm-content">
+          <div class="rm-time" data-i18n="rm.s4.time">36 – 48 mesi</div>
+          <div class="rm-title" data-i18n="rm.s4.title">Marchio CE & Lancio Commerciale</div>
+          <div class="rm-desc" data-i18n="rm.s4.desc">Certificazione CE, scale-up produttivo e accesso iniziale al mercato europeo.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ── CTA / WAITLIST ───────────────────────────────────────── -->
+<section id="cta" aria-labelledby="cta-h2">
+  <div class="wrap">
+    <div class="cta-inner">
+      <div class="tag light anim" data-i18n="cta.tag">EARLY ACCESS</div>
+      <h2 id="cta-h2" class="disp-md anim" style="transition-delay:.06s;margin-top:4px" data-i18n="cta.h2">
+        Sii tra i primi<br>a testare EndoSense.
+      </h2>
+      <p class="body-lg anim" style="transition-delay:.12s;margin-top:18px" data-i18n="cta.lead">
+        Siamo in fase di sviluppo. Registra il tuo interesse per ricevere accesso prioritario quando il programma pilota aprirà.
+      </p>
+
+
+      <form class="cta-form anim" style="transition-delay:.20s" id="wl-form" novalidate aria-label="Programma pilota">
+        <div class="frow">
+          <div class="fg">
+            <label class="flabel" for="f-name" data-i18n="form.name">Nome</label>
+            <input class="finput" type="text" id="f-name" name="name" required autocomplete="name"
+              data-i18n-ph="form.name.ph" placeholder="Mario Rossi">
+          </div>
+          <div class="fg">
+            <label class="flabel" for="f-email" data-i18n="form.email">Email professionale</label>
+            <input class="finput" type="email" id="f-email" name="email" required autocomplete="email"
+              data-i18n-ph="form.email.ph" placeholder="nome@struttura.it">
+          </div>
+        </div>
+        <div class="fg">
+          <label class="flabel" for="f-role" data-i18n="form.role">Ruolo</label>
+          <select class="fsel" id="f-role" name="role" required>
+            <option value="" data-i18n="form.r0">Seleziona il tuo ruolo</option>
+            <option value="endocrinologist" data-i18n="form.r1">Endocrinologo / Medico specialista</option>
+            <option value="surgeon" data-i18n="form.r2">Chirurgo</option>
+            <option value="gp" data-i18n="form.r3">Medico di base</option>
+            <option value="director" data-i18n="form.r4">Direttore sanitario</option>
+            <option value="pharmacist" data-i18n="form.r5">Farmacista</option>
+            <option value="other" data-i18n="form.r6">Altro</option>
+          </select>
+        </div>
+        <button type="submit" class="btn-white" id="form-btn">
+          <span data-i18n="form.submit">Registra il tuo interesse</span>
+        </button>
+        <p class="fdisc" data-i18n="form.disc">Nessuno spam. Solo aggiornamenti su EndoSense.</p>
+      </form>
+
+      <!-- Cosa succede dopo -->
+      <div class="next-steps anim" style="transition-delay:.26s" aria-label="Prossimi passi">
+        <div class="ns-item">
+          <div class="ns-num">1</div>
+          <div class="ns-text" data-i18n="ns.1">Compila il modulo qui sopra, bastano 20 secondi</div>
+        </div>
+        <div class="ns-arrow" aria-hidden="true">→</div>
+        <div class="ns-item">
+          <div class="ns-num">2</div>
+          <div class="ns-text" data-i18n="ns.2">Ti ricontattiamo entro 48 ore</div>
+        </div>
+        <div class="ns-arrow" aria-hidden="true">→</div>
+        <div class="ns-item">
+          <div class="ns-num">3</div>
+          <div class="ns-text" data-i18n="ns.3">Accesso prioritario al dispositivo</div>
+        </div>
+      </div>
+
+      <div class="fsuccess anim" id="form-ok">
+        <div class="fsuccess-ic" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 11l5 5L18 6"/>
+          </svg>
+        </div>
+        <h4 style="font-size:18px;font-weight:500;color:var(--ink);margin-bottom:8px" data-i18n="form.ok.h">Sei nella lista.</h4>
+        <p style="font-size:14px;color:var(--ink-mute)" data-i18n="form.ok.p">Ti contatteremo presto con aggiornamenti su EndoSense.</p>
+      </div>
+
+      <div class="anim" style="transition-delay:.26s;margin-top:24px;text-align:center">
+        <div class="fdiv"><span data-i18n="form.or">oppure</span></div>
+        <div style="margin-top:18px">
+          <a href="mailto:tamara.boscarino@unicampus.it" class="pilot-btn">
+            <span data-i18n="form.pilot">Sei una struttura clinica? Candidati al programma pilota</span>
+            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M1 6h10M7 2l4 4-4 4"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- ── FOOTER ────────────────────────────────────────────────── -->
+<footer id="footer" aria-label="Footer">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div>
+        <img src="assets/logo.png" class="foot-logo" alt="EndoSense">
+        <p class="foot-tag" data-i18n="foot.tag">Diagnostica endocrina nel punto di cura.</p>
+      </div>
+      <div>
+        <p class="fcol-h" data-i18n="foot.nav">Navigazione</p>
+        <ul class="fcol-links">
+          <li><a href="#problem" data-i18n="nav.problem">Il Problema</a></li>
+          <li><a href="#solution" data-i18n="nav.solution">La Soluzione</a></li>
+          <li><a href="#proof" data-i18n="nav.edge">Vantaggio</a></li>
+          <li><a href="#cta" data-i18n="nav.contact">Contatti</a></li>
+        </ul>
+      </div>
+      <div>
+        <p class="fcol-h" data-i18n="foot.contact">Contatti</p>
+        <div class="foot-contacts">
+          <a href="mailto:tamara.boscarino@unicampus.it">tamara.boscarino@unicampus.it</a>
+          <a href="tel:+393319701366">+39 331 970 1366</a>
+          <a href="#" aria-label="LinkedIn EndoSense">LinkedIn →</a>
+        </div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span data-i18n="foot.copy">© 2025 EndoSense. Tutti i diritti riservati.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="alert" aria-live="polite"></div>
+
+<!-- ── SCRIPT ────────────────────────────────────────────────── -->
+<script>
+/* ── i18n ─────────────────────────────────────────────────── */
+const T = {
+  it: {
+    'nav.problem':'Il Problema','nav.solution':'La Soluzione','nav.edge':'Vantaggio',
+    'nav.team':'Team','nav.roadmap':'Roadmap','nav.contact':'Contatti','nav.cta':'Richiedi Accesso',
+    'hero.tag':'DIAGNOSTICA POINT-OF-CARE',
+    'hero.h1a':'TSH e Ca²⁺.','hero.h1b':'In ambulatorio.','hero.h1c':'In 10 minuti.',
+    'hero.lead':"Biosensore elettrochimico e piattaforma AI per il testing endocrino in tempo reale, direttamente in ambulatorio. Senza laboratorio. Senza attesa.",
+    'hero.roles':'Per endocrinologi · chirurghi · medici di base · cliniche private',
+    'hero.cta1':'Registra il tuo interesse','hero.cta2':'Come funziona →',
+    'hero.p1':'per referto','hero.p2':'simultanei',
+    'prob.tag':'IL PROBLEMA',
+    'prob.h2':'Il problema è sistemico.<br>E il medico lo paga.',
+    'prob.big.num':'>10%',
+    'prob.big.label':'della popolazione italiana affetta da patologie tiroidee e paratiroidee (2025). Un bacino strutturale che non smette di crescere.',
+    'prob.big.source':'Fonte: dato epidemiologico aggregato, 2025',
+    'prob.big.context':"4 mesi all'anno persi da ogni medico in gestione asincrona. 19% di visite inutili, 3% di test di laboratorio inappropriati. <strong>Il paziente aspetta. Il medico non guadagna. Il sistema non regge.</strong>",
+    'prob.s1.num':'~3 h/gg','prob.s1.title':'Gestione asincrona ogni giorno','prob.s1.desc':"L'endocrinologo dedica in media ~3 ore al giorno a referti e follow-up remoti invece di acquisire nuovi pazienti.",
+    'prob.s2.num':'>12 mesi','prob.s2.title':'Dalla sintomatologia alla diagnosi','prob.s2.desc':"Tempo medio tra i primi sintomi e la diagnosi definitiva. Un ritardo che peggiora gli esiti clinici.",
+    'prob.s3.num':'+500€','prob.s3.title':'Spesa annua del paziente','prob.s3.desc':"57% dei pazienti intervistati spende oltre 500€ l'anno in trattamenti. Un costo che pesa sulla compliance.",
+    'sol.tag':'LA SOLUZIONE',
+    'sol.h2':'Un biosensore.<br>Due marcatori. Una visita.',
+    'sol.lead':"EndoSense è un biosensore elettrochimico abbinato a una piattaforma AI: misura TSH e calcio ionico simultaneamente, direttamente in ambulatorio, in meno di 10 minuti.",
+    'sol.f1.h':'Risultati in &lt; 10 minuti','sol.f1.p':'Diagnosi immediata durante la visita. Il paziente non deve tornare per il referto.',
+    'sol.f2.h':'Doppia misurazione','sol.f2.p':"TSH e Ca²⁺ ionizzato in un'unica analisi. L'unico sistema POC che misura entrambi.",
+    'sol.f3.h':'Portatile e sostenibile','sol.f3.p':'Design compatto: hardware principale riutilizzabile, sensore monouso. Portabile in qualsiasi ambulatorio, con impatto ambientale minimo.',
+    'sol.f4.h':'Piattaforma AI-driven','sol.f4.p':'I risultati appaiono in tempo reale con trend storici e interconnessioni AI-driven. Il medico decide nella stessa visita.',
+    'proof.tag':'VANTAGGIO COMPETITIVO',
+    'proof.h2':"L'unico sul mercato<br>che misura entrambi.",
+    'proof.lead':"100% dei medici contattati conferma il problema. EndoSense è l'unico sistema POC che risponde a tutte le dimensioni critiche.",
+    'proof.col.speed':'&lt; 10 min',
+    'proof.col.dual':'TSH + Ca²⁺',
+    'proof.col.portable':'Portatile',
+    'proof.col.comb':'Facile da usare',
+    'team.tag':'IL TEAM','team.h2':'Le persone dietro EndoSense.','team.lead':'Ricerca, regolatoria, strategia e design. Un team multidisciplinare costruito per portare EndoSense sul mercato.',
+    'rm.tag':'ROADMAP','rm.h2':"Quattro fasi.<br>Un'unica destinazione.",'rm.lead':'Il percorso che ci porterà dalla validazione tecnologica al lancio commerciale in Europa.',
+    'rm.s1.badge':'In corso','rm.s1.time':'0 – 6 mesi','rm.s1.title':'Validazione Tecnologica','rm.s1.desc':'Proof-of-concept, validazione precoce e sviluppo iniziale di hardware e software.',
+    'rm.s2.time':'6 – 18 mesi','rm.s2.title':'Sviluppo della Piattaforma','rm.s2.desc':"Sviluppo dell'hardware integrato e del sistema embedded.",
+    'rm.s3.time':'18 – 36 mesi','rm.s3.title':'Validazione Clinica e Regolatoria','rm.s3.desc':'Studi analitici, validazione clinica e iter IVDR Classe C.',
+    'rm.s4.time':'36 – 48 mesi','rm.s4.title':'Marchio CE & Lancio Commerciale','rm.s4.desc':'Certificazione CE, scale-up produttivo e accesso iniziale al mercato europeo.',
+    'cta.tag':'EARLY ACCESS',
+    'cta.h2':"Trasformiamo l'attesa<br>in decisione.",
+    'cta.lead':'Siamo in fase di sviluppo. Registra il tuo interesse e ricevi accesso prioritario al programma pilota.',
+    'form.name':'Nome','form.name.ph':'Mario Rossi',
+    'form.email':'Email professionale','form.email.ph':'nome@struttura.it',
+    'form.role':'Ruolo',
+    'form.r0':'Seleziona il tuo ruolo','form.r1':'Endocrinologo / Medico specialista',
+    'form.r2':'Chirurgo','form.r3':'Medico di base',
+    'form.r4':'Direttore sanitario','form.r5':'Farmacista','form.r6':'Altro',
+    'form.submit':'Registra il tuo interesse',
+    'form.disc':'Nessuno spam. Solo aggiornamenti su EndoSense.',
+    'form.or':'oppure','form.pilot':'Hai domande? Scrivici direttamente',
+    'ns.1':'Compila il modulo qui sopra, bastano 20 secondi',
+    'ns.2':'Ti aggiorniamo sullo sviluppo',
+    'ns.3':'Accesso prioritario al lancio del pilota',
+    'form.ok.h':'Sei nella lista.','form.ok.p':'Ti contatteremo presto con aggiornamenti su EndoSense.',
+    'foot.tag':"Trasformiamo l'attesa in decisione.",
+    'foot.nav':'Navigazione','foot.contact':'Contatti',
+    'foot.copy':'© 2026 EndoSense. Tutti i diritti riservati.',
+  },
+  en: {
+    'nav.problem':'The Problem','nav.solution':'The Solution','nav.edge':'Edge',
+    'nav.team':'Team','nav.roadmap':'Roadmap','nav.contact':'Contact','nav.cta':'Request Access',
+    'hero.tag':'POINT-OF-CARE DIAGNOSTICS',
+    'hero.h1a':'TSH and Ca²⁺.','hero.h1b':'At the point of care.','hero.h1c':'In 10 minutes.',
+    'hero.lead':"Biosensing device and AI-powered platform for real-time endocrine testing, directly at the point of care. No lab. No wait.",
+    'hero.roles':'For endocrinologists · surgeons · GPs · private clinics',
+    'hero.cta1':'Register your interest','hero.cta2':'See how it works →',
+    'hero.p1':'per result','hero.p2':'simultaneous',
+    'prob.tag':'THE PROBLEM',
+    'prob.h2':'The problem is systemic.<br>And physicians pay the price.',
+    'prob.big.num':'>10%',
+    'prob.big.label':'of the Italian population affected by thyroid and parathyroid conditions (2025). A structural pool that keeps growing.',
+    'prob.big.source':'Source: aggregated epidemiological data, 2025',
+    'prob.big.context':"4 months per year lost by each physician to asynchronous management. 19% unnecessary visits, 3% inappropriate lab tests. <strong>Patients wait. Physicians lose time. The system can't keep up.</strong>",
+    'prob.s1.num':'~3 h/day','prob.s1.title':'Async management per day','prob.s1.desc':"The average endocrinologist spends ~3 hours a day on results and remote follow-ups instead of seeing new patients.",
+    'prob.s2.num':'>12 months','prob.s2.title':'From symptoms to diagnosis','prob.s2.desc':"Average time between a patient's first symptoms and a definitive diagnosis — a delay that worsens clinical outcomes.",
+    'prob.s3.num':'+€500','prob.s3.title':'Annual patient spend','prob.s3.desc':"57% of patients interviewed spend over €500 per year on treatment — a burden that undermines compliance.",
+    'sol.tag':'THE SOLUTION',
+    'sol.h2':'One biosensor.<br>Two markers. One visit.',
+    'sol.lead':"EndoSense is an electrochemical biosensor paired with an AI-powered platform: it simultaneously measures TSH and ionized calcium, directly at the point of care, in under 10 minutes.",
+    'sol.f1.h':'Results in &lt; 10 minutes','sol.f1.p':"Immediate diagnosis during the visit. Patients don't need to return for their results.",
+    'sol.f2.h':'Dual measurement','sol.f2.p':'TSH and ionized Ca²⁺ in one single analysis. The only POC system that measures both.',
+    'sol.f3.h':'Portable and sustainable','sol.f3.p':'Compact design: reusable core hardware, single-use disposable sensor. Portable to any clinic, with minimal environmental footprint.',
+    'sol.f4.h':'AI-driven platform','sol.f4.p':'Results appear in real time with historical trends and AI-driven insights. The physician decides within the same visit.',
+    'proof.tag':'COMPETITIVE EDGE',
+    'proof.h2':'The only one on the market<br>that measures both.',
+    'proof.lead':'100% of contacted physicians confirm the problem. EndoSense is the only POC system that scores on every critical dimension.',
+    'proof.col.speed':'&lt; 10 min',
+    'proof.col.dual':'TSH + Ca²⁺',
+    'proof.col.portable':'Portable',
+    'proof.col.comb':'Ease of use',
+    'team.tag':'THE TEAM','team.h2':'The people behind EndoSense.','team.lead':'Research, regulatory, strategy and design. A multidisciplinary team built to bring EndoSense to market.',
+    'rm.tag':'ROADMAP','rm.h2':'Four phases.<br>One destination.','rm.lead':'The path from technology validation to commercial launch across Europe.',
+    'rm.s1.badge':'In progress','rm.s1.time':'0 – 6 months','rm.s1.title':'Technology Validation','rm.s1.desc':'Proof-of-concept validation and early hardware and software development.',
+    'rm.s2.time':'6 – 18 months','rm.s2.title':'Platform Development','rm.s2.desc':'Development of integrated hardware and embedded system.',
+    'rm.s3.time':'18 – 36 months','rm.s3.title':'Clinical & Regulatory Validation','rm.s3.desc':'Analytical studies, clinical validation and IVDR Class C pathway.',
+    'rm.s4.time':'36 – 48 months','rm.s4.title':'CE Mark & Commercial Launch','rm.s4.desc':'CE certification, manufacturing scale-up and initial market access.',
+    'cta.tag':'EARLY ACCESS',
+    'cta.h2':'Turn waiting time<br>into decision time.',
+    'cta.lead':"We're in development. Register your interest and receive priority access to the pilot program.",
+    'form.name':'Name','form.name.ph':'First Last',
+    'form.email':'Professional email','form.email.ph':'name@institution.com',
+    'form.role':'Role',
+    'form.r0':'Select your role','form.r1':'Endocrinologist / Specialist',
+    'form.r2':'Surgeon','form.r3':'General Practitioner',
+    'form.r4':'Medical Director','form.r5':'Pharmacist','form.r6':'Other',
+    'form.submit':'Register your interest',
+    'form.disc':'No spam. EndoSense updates only.',
+    'form.or':'or','form.pilot':'Have questions? Write to us directly',
+    'ns.1':'Fill in the form above — takes 20 seconds',
+    'ns.2':"We'll keep you updated on development",
+    'ns.3':'Priority access when the pilot opens',
+    'form.ok.h':"You're on the list.",'form.ok.p':"We'll be in touch soon with EndoSense updates.",
+    'foot.tag':'Turning waiting time into decision time.',
+    'foot.nav':'Navigation','foot.contact':'Contact',
+    'foot.copy':'© 2026 EndoSense. All rights reserved.',
+  }
+};
+
+let lang = 'it';
+
+function setLang(l) {
+  lang = l;
+  document.documentElement.lang = l;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const k = el.dataset.i18n;
+    if (T[l][k] !== undefined) el.innerHTML = T[l][k];
+  });
+  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+    const k = el.dataset.i18nPh;
+    if (T[l][k] !== undefined) el.placeholder = T[l][k];
+  });
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === l);
+  });
+}
+
+/* ── NAV SCROLL ──────────────────────────────────────────── */
+const nav = document.getElementById('nav');
+const sbar = document.getElementById('sbar');
+window.addEventListener('scroll', () => {
+  const y = window.scrollY;
+  nav.classList.toggle('scrolled', y > 60);
+  const max = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  sbar.style.width = (max > 0 ? (y / max) * 100 : 0) + '%';
+}, { passive: true });
+
+/* ── HAMBURGER ───────────────────────────────────────────── */
+const hamburger = document.getElementById('hamburger');
+const mobMenu   = document.getElementById('mob-menu');
+let menuOpen = false;
+
+hamburger.addEventListener('click', () => {
+  menuOpen = !menuOpen;
+  hamburger.classList.toggle('open', menuOpen);
+  mobMenu.classList.toggle('open', menuOpen);
+  hamburger.setAttribute('aria-expanded', String(menuOpen));
+  mobMenu.setAttribute('aria-hidden', String(!menuOpen));
+  document.body.style.overflow = menuOpen ? 'hidden' : '';
+});
+
+function closeMob() {
+  menuOpen = false;
+  hamburger.classList.remove('open');
+  mobMenu.classList.remove('open');
+  hamburger.setAttribute('aria-expanded', 'false');
+  mobMenu.setAttribute('aria-hidden', 'true');
+  document.body.style.overflow = '';
+}
+
+/* ── INTERSECTION OBSERVER ───────────────────────────────── */
+const obs = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.anim').forEach(el => obs.observe(el));
+
+/* ── FORM ────────────────────────────────────────────────── */
+document.getElementById('wl-form').addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const name  = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const role  = document.getElementById('f-role').value;
+  if (!name || !email || !role) {
+    toast(lang === 'it' ? 'Compila tutti i campi obbligatori.' : 'Please fill in all required fields.');
+    return;
+  }
+  const btn = document.getElementById('form-btn');
+  const span = btn.querySelector('span');
+  btn.disabled = true;
+  span.textContent = lang === 'it' ? 'Invio in corso…' : 'Sending…';
+  try {
+    const res = await fetch('https://formspree.io/f/xkolbnry', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, role, lang })
+    });
+    if (res.ok) {
+      document.getElementById('wl-form').style.display = 'none';
+      const ok = document.getElementById('form-ok');
+      ok.classList.add('show');
+      setTimeout(() => ok.classList.add('in'), 10);
+    } else {
+      throw new Error('server error');
+    }
+  } catch {
+    toast(lang === 'it' ? "Errore durante l'invio. Riprova tra poco." : 'Submission failed. Please try again.');
+    btn.disabled = false;
+    span.textContent = T[lang]['form.submit'];
+  }
+});
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 5000);
+}
+
+/* ── INIT ────────────────────────────────────────────────── */
+setLang('it');
+</script>
+</body>
+</html>
