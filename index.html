@@ -601,6 +601,7 @@
     .how-bullets li{font-size:14px;font-weight:400;color:var(--ink-2);padding-left:20px;position:relative;line-height:1.55}
     .how-bullets li::before{content:"—";color:var(--primary);font-weight:600;position:absolute;left:0}
     .how-placeholder{width:100%;aspect-ratio:4/3;background:var(--canvas-soft);border:2px dashed var(--hairline);border-radius:var(--r-xl);display:flex;align-items:center;justify-content:center;color:var(--ink-mute);font-size:12px;text-align:center;padding:24px;transition:border-color .2s}
+    .how-product-img{width:100%;height:auto;filter:drop-shadow(0 24px 48px rgba(11,35,66,.13))}
     .how-beta{background:var(--primary-bg);border:1px solid rgba(36,87,143,.2);border-radius:var(--r-lg);padding:18px 22px;margin-top:24px}
     .how-beta-text{font-size:14px;font-weight:500;color:var(--ink-2);margin-bottom:8px}
     .how-beta-cta{font-size:14px;font-weight:500;color:var(--primary);transition:opacity .2s}
@@ -792,9 +793,7 @@
             </ul>
           </div>
           <div class="how-img">
-            <div class="how-placeholder" aria-hidden="true">
-              <span>assets/hardware-1.jpg</span>
-            </div>
+            <img src="assets/hardware-1.jpg" alt="EndoSense dispositivo hardware" class="how-product-img">
           </div>
         </div>
 
