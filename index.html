@@ -175,6 +175,7 @@
     .mob-menu.open{opacity:1;pointer-events:all}
     .mob-menu ul{list-style:none;display:flex;flex-direction:column;align-items:center;gap:4px}
     .mob-menu a{display:block;font-size:28px;font-weight:300;letter-spacing:-.6px;color:var(--ink);padding:10px 48px;transition:color .2s}
+    .mob-menu .mob-cta .btn{display:inline-flex;padding:10px 10px 10px 20px;font-size:15px;color:#fff;letter-spacing:normal}
     .mob-menu a:hover{color:var(--primary)}
     .mob-menu li{opacity:0;transform:translateY(14px);transition:opacity .4s,transform .4s var(--ease)}
     .mob-menu.open li:nth-child(1){opacity:1;transform:none;transition-delay:.06s}
@@ -467,6 +468,7 @@
       padding:3px 8px;border-radius:var(--r-pill);
       margin-bottom:0;
     }
+    .rm-badge-mob{display:none}
     @media(max-width:900px){
       .rm-track{grid-template-columns:1fr 1fr;gap:40px 20px}
       .rm-track::before{display:none}
@@ -476,6 +478,8 @@
       .rm-step{align-items:flex-start;text-align:left;flex-direction:row;gap:16px}
       .rm-dot{flex-shrink:0;margin-bottom:0;margin-top:2px}
       .rm-content{display:flex;flex-direction:column}
+      .rm-badge-wrap{display:none}
+      .rm-badge-mob{display:inline-block;margin-bottom:8px}
     }
 
     /* ─── CTA / WAITLIST ─────────────────────────────────────── */
@@ -839,6 +843,7 @@
         </div>
         <div class="rm-dot">1</div>
         <div class="rm-content">
+          <div class="rm-badge rm-badge-mob" data-i18n="rm.s1.badge">In corso</div>
           <div class="rm-time" data-i18n="rm.s1.time">0 – 6 mesi</div>
           <div class="rm-title" data-i18n="rm.s1.title">Validazione Tecnologica</div>
           <div class="rm-desc" data-i18n="rm.s1.desc">Proof-of-concept e raccolta dei primi dati di performance del biosensore.</div>
