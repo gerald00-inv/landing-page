@@ -292,21 +292,24 @@
     .prob-header{text-align:center;max-width:640px;margin:0 auto 72px}
     /* numero dominante */
     .prob-hero{
-      display:grid;grid-template-columns:1fr 1.6fr;
+      display:grid;grid-template-columns:auto 1fr;
       gap:48px;align-items:center;
       background:var(--canvas);border:1px solid var(--hairline);
-      border-radius:var(--r-xl);padding:48px 48px;
+      border-radius:var(--r-xl);padding:48px;
       margin-bottom:16px;
       box-shadow:var(--sh-1);
     }
+    .prob-big-left{display:flex;align-items:center;justify-content:center;padding-right:16px;border-right:1px solid var(--hairline)}
+    .prob-big-right{display:flex;flex-direction:column;justify-content:center}
     .prob-big-num{
       font-size:clamp(72px,12vw,120px);font-weight:300;
       letter-spacing:-3px;color:var(--primary);
       line-height:1;font-variant-numeric:tabular-nums;display:block;
+      white-space:nowrap;
     }
     .prob-big-label{
       font-size:15px;font-weight:300;color:var(--ink-mute);
-      line-height:1.6;margin-top:14px;max-width:280px;
+      line-height:1.6;
     }
     .prob-big-source{
       font-size:11px;font-weight:400;color:var(--ink-mute);
@@ -334,7 +337,7 @@
     }
     .pstat-title{font-size:15px;font-weight:500;color:var(--ink);margin-bottom:6px;letter-spacing:-.1px}
     .pstat-desc{font-size:13px;font-weight:300;color:var(--ink-mute);line-height:1.6}
-    @media(max-width:900px){.prob-hero{grid-template-columns:1fr}}
+    @media(max-width:900px){.prob-hero{grid-template-columns:1fr}.prob-big-left{border-right:none;border-bottom:1px solid var(--hairline);padding-right:0;padding-bottom:24px}}
     @media(max-width:560px){.prob-stats{grid-template-columns:1fr}}
 
     /* ─── SOLUTION ───────────────────────────────────────────── */
@@ -730,14 +733,16 @@
 
     <!-- Numero dominante -->
     <div class="prob-hero anim" style="transition-delay:.1s">
-      <div style="text-align:right">
+      <div class="prob-big-left">
         <span class="prob-big-num" data-i18n="prob.big.num">6M+</span>
+      </div>
+      <div class="prob-big-right">
         <p class="prob-big-label" data-i18n="prob.big.label">pazienti con patologie tiroidee in Italia. Una domanda strutturale che la clinica non riesce ad assorbire.</p>
         <p class="prob-big-source" data-i18n="prob.big.source">Fonte: ISS, Istituto Superiore di Sanità</p>
+        <p class="prob-big-context" style="margin-top:20px" data-i18n="prob.big.context">
+          Il bacino cresce ogni anno: ipotiroidismo, Hashimoto, Graves, noduli, post-tiroidectomia. Tutti pazienti da monitorare nel tempo. <strong>Ogni giorno che aspettano è capacità che la clinica non monetizza.</strong>
+        </p>
       </div>
-      <p class="prob-big-context" data-i18n="prob.big.context">
-        Il bacino cresce ogni anno: ipotiroidismo, Hashimoto, Graves, noduli, post-tiroidectomia. Tutti pazienti da monitorare nel tempo. <strong>Ogni giorno che aspettano è capacità che la clinica non monetizza.</strong>
-      </p>
     </div>
 
     <!-- Tre dati di sistema -->
