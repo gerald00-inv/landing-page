@@ -299,7 +299,7 @@
       margin-bottom:16px;
       box-shadow:var(--sh-1);
     }
-    .prob-big-left{display:flex;align-items:center;justify-content:center;padding-right:16px;border-right:1px solid var(--hairline)}
+    .prob-big-left{display:flex;flex-direction:column;justify-content:center;padding-right:32px;border-right:1px solid var(--hairline)}
     .prob-big-right{display:flex;flex-direction:column;justify-content:center}
     .prob-big-num{
       font-size:clamp(72px,12vw,120px);font-weight:300;
@@ -308,12 +308,12 @@
       white-space:nowrap;
     }
     .prob-big-label{
-      font-size:15px;font-weight:300;color:var(--ink-mute);
-      line-height:1.6;
+      font-size:15px;font-weight:300;color:var(--ink);
+      line-height:1.6;margin-top:14px;
     }
     .prob-big-source{
-      font-size:11px;font-weight:400;color:var(--ink-mute);
-      opacity:.6;margin-top:10px;letter-spacing:.02em;
+      font-size:11px;font-weight:400;color:var(--ink);
+      opacity:.7;margin-top:8px;letter-spacing:.02em;
     }
     .prob-big-context{
       font-size:17px;font-weight:300;color:var(--ink-2);
@@ -735,11 +735,11 @@
     <div class="prob-hero anim" style="transition-delay:.1s">
       <div class="prob-big-left">
         <span class="prob-big-num" data-i18n="prob.big.num">6M+</span>
-      </div>
-      <div class="prob-big-right">
         <p class="prob-big-label" data-i18n="prob.big.label">pazienti con patologie tiroidee in Italia. Una domanda strutturale che la clinica non riesce ad assorbire.</p>
         <p class="prob-big-source" data-i18n="prob.big.source">Fonte: ISS, Istituto Superiore di Sanità</p>
-        <p class="prob-big-context" style="margin-top:20px" data-i18n="prob.big.context">
+      </div>
+      <div class="prob-big-right">
+        <p class="prob-big-context" data-i18n="prob.big.context">
           Il bacino cresce ogni anno: ipotiroidismo, Hashimoto, Graves, noduli, post-tiroidectomia. Tutti pazienti da monitorare nel tempo. <strong>Ogni giorno che aspettano è capacità che la clinica non monetizza.</strong>
         </p>
       </div>
